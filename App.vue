@@ -22,13 +22,13 @@
   <table>
   <button type="button" v-on:click="receive" style="color:red">Import</button>
   <thead>Workbench,Utilitary</thead>
-  <tr v-for="(item, key) in products" :key="key"></tr>
+  <!--<tr v-for="(item, key) in products" :key="key"></tr>
     <td>
         {{item.workbench}}
     </td>
     <td>
         {{item.utilitary}}
-    </td>
+    </td>-->
   </table>
     <i><strong><br>"Toss a coin to your witcher o'valley of plenty"</strong></i><br>
     <br>
