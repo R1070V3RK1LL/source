@@ -19,11 +19,16 @@
   <input type="text" name="utilitary" style="color:green;border-color:black" v-model="utilitary"> <br><br>
   <button type="button" v-on:click="send" style="color:red">OK</button>
     </form>
-  <table method="get">
-  <tr>Workbench</tr>
-  <!--<td v-for:"product.Workbench"></td>-->
-  <tr>Utilitary</tr>
-  <td v-on:hover="receive2"></td>
+  <table>
+  <button type="button" v-on:click="receive" style="color:red">Import</button>
+  <thead>Workbench,Utilitary</thead>
+  <!--<tr v-for="(item, key) in products" :key="key"></tr>
+    <td>
+        {{item.workbench}}
+    </td>
+    <td>
+        {{item.utilitary}}
+    </td>-->
   </table>
     <i><strong><br>"Toss a coin to your witcher o'valley of plenty"</strong></i><br>
     <br>
@@ -83,21 +88,24 @@ export default {
     }
   },
   methods:{
-    /*receive:function(){
-        ajaxGet("", function (receive) {
-  var products = JSON.parse(receive);
-    products.forEach(function (products) {
-        products.Workbench;
-    })
-    })},
-    receive2:function(){
-        ajaxGet("", function (receive2) {
-  var products = JSON.parse(receive2);
-    products.forEach(function (products) {
-        products.Utilitary;
-    })
-        })
-    },*/
+  receive:function(){
+ var myHeaders = new Headers()
+ myHeaders.append("Content-Type","application/json")
+ 
+ this.products = new Request("https://localhost:44386/api/Products",
+         {
+            headers: myHeaders,
+            method: 'GET',})
+    alert(this.products)
+    fetch(this.products)
+      .then(response => 
+       {
+        if (response.status === 200) {
+           alert('Object created')
+        } else {
+           alert('Something went wrong on api server!');
+       }
+       })},
     send: function() {
      var myHeaders = new Headers()
       myHeaders.append("Content-Type","application/json")
