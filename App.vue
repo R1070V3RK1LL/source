@@ -19,6 +19,12 @@
   <input type="text" name="utilitary" style="color:green;border-color:black" v-model="utilitary"> <br><br>
   <button type="button" v-on:click="send" style="color:red">OK</button>
     </form>
+  <table method="get">
+  <tr>Workbench</tr>
+  <!--<td v-for:"product.Workbench"></td>-->
+  <tr>Utilitary</tr>
+  <td v-on:hover="receive2"></td>
+  </table>
     <i><strong><br>"Toss a coin to your witcher o'valley of plenty"</strong></i><br>
     <br>
     <footer>
@@ -77,6 +83,21 @@ export default {
     }
   },
   methods:{
+    /*receive:function(){
+        ajaxGet("", function (receive) {
+  var products = JSON.parse(receive);
+    products.forEach(function (products) {
+        products.Workbench;
+    })
+    })},
+    receive2:function(){
+        ajaxGet("", function (receive2) {
+  var products = JSON.parse(receive2);
+    products.forEach(function (products) {
+        products.Utilitary;
+    })
+        })
+    },*/
     send: function() {
      var myHeaders = new Headers()
       myHeaders.append("Content-Type","application/json")
@@ -99,7 +120,7 @@ export default {
         } else {
            alert('Something went wrong on api server!');
        }
-       });
+       })
      const request2 = new Request("https://localhost:44386/api/Products",
          {
             headers: myHeaders,
@@ -120,25 +141,9 @@ export default {
         } else {
            alert('Something went wrong on api server!');
        }
-       });
-       const request3 = new Request("https://localhost:44386/api/Products",
-         {
-            headers: myHeaders,
-            method: 'GET',
-          })
-    alert(request3)
-    fetch(request3)
-      .then(response => 
-       {
-        if (response.status === 201) {
-           alert('Object received')
-        } else {
-           alert('Something went wrong on api server!');
-       }
        })
     }
   }
-  
 }
 </script>
 
