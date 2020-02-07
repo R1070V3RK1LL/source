@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -97,9 +97,9 @@ namespace ProductsCore.Controllers
             return p;
         }
         [HttpGet("{id}")]
-        private IActionResult GetProduct(string id)
+        private IActionResult GetProduct(int id)
         {
-            var product = ReadAllData().FirstOrDefault((p) =>  p.Workbench == id);
+            var product = ReadAllData().FirstOrDefault((p) =>  p.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -112,7 +112,8 @@ namespace ProductsCore.Controllers
         {
             InsertOrderData(product);
             //DeleteOrderData(product);
-            UpdateOrderData(product);
+            //UpdateOrderData(product);
+            product.Id += 1;
             return CreatedAtAction(nameof(product), new { id = product.Workbench }, product);
 
         }
