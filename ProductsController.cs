@@ -113,8 +113,8 @@ namespace ProductsCore.Controllers
             InsertOrderData(product);
             //DeleteOrderData(product);
             //UpdateOrderData(product);
-            product.Id += 1;
-            return CreatedAtAction(nameof(product), new { id = product.Workbench }, product);
+            product.Id = product.Id+1;
+            return CreatedAtAction(nameof(product), new { id = product.Id }, product);
 
         }
 
