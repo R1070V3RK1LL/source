@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace ProductsCore.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-
+        public static int i = 0;
         private static string _str = " Data Source = PCISABELLE; Initial Catalog = Products; Integrated Security = True";
         
 
@@ -43,18 +43,21 @@ namespace ProductsCore.Controllers
                 // Call Close when done reading.
                 reader.Close();
             }
+            for (i = 0; i < lp.Count(); i++)
+            {
+                lp[i].Id = i;
+            }
             return lp;
         }
         private void InsertOrderData(Product product)
         {
-
             using (SqlConnection connection =
                        new SqlConnection(_str))
             {
                 SqlCommand command =
                     new SqlCommand(_str, connection);
                 connection.Open();
-                command.CommandText = $"INSERT INTO dbo.Table_1(workbench,utilitary) VALUES ('{product.Workbench}','{product.Utilitary}')";
+                command.CommandText = $"INSERT INTO dbo.Table_1(id,workbench,utilitary) VALUES (NEXT VALUE FOR [dbo].[Seq-Table1-id],'{product.Workbench}','{product.Utilitary}')";
                 command.ExecuteNonQuery();
             }
         }
@@ -97,9 +100,9 @@ namespace ProductsCore.Controllers
             return p;
         }
         [HttpGet("{id}")]
-        private IActionResult GetProduct(string id)
+        private IActionResult GetProduct(int id)
         {
-            var product = ReadAllData().FirstOrDefault((p) =>  p.Workbench == id);
+            var product = ReadAllData().FirstOrDefault((p) =>  p.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -110,10 +113,11 @@ namespace ProductsCore.Controllers
         [HttpPost]
         public IActionResult PostProduct(Product product)
         {
+
             InsertOrderData(product);
             //DeleteOrderData(product);
-            UpdateOrderData(product);
-            return CreatedAtAction(nameof(product), new { id = product.Workbench }, product);
+            //UpdateOrderData(product);
+            return CreatedAtAction(nameof(product), new { id = product.Id }, product);
 
         }
 
