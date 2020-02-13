@@ -133,25 +133,27 @@
   </div>
   <div class="cylon_eye"></div>
 </div>
-  <table method="get">
-  <button type="button" v-on:click="receive" style="color:red">Import</button>
-  <thead style="color:yellow">Workbench,Utilitary</thead>
-  <!--<tr v-for="product in products" :key="product.Id"></tr>
-    <td>
-        {{product.Workbench}}
+  <table >
+  <button type="button" v-on:click="receive" style="color:red" method="get">Import</button>
+  <thead style="color:yellow" >Workbench,Utilitary</thead>
+  <tr v-if="lp && lp.length == 0" ><td>empty</td></tr>
+  <tr v-else v-for="product in lp" v-bind:key="product.id">
+    <td style="color:yellow" >
+        {{product.workbench}}
     </td>
-    <td>
-        {{product.Utilitary}}
-    </td>-->
+    <td style="color:yellow">
+        {{product.utilitary}}
+    </td>
+  </tr>
 </table>
-
-    <i style="color:yellow"><strong><br>"Toss a coin to your witcher o'valley of plenty"</strong></i><br>
+<br>
+    <i style="color:yellow"><strong><br>"Tossed a coin to your witcher o'valley of plenty"</strong></i><br>
 
     <br>
 
     <footer>
 
-      <strong style="color:yellow"><em>Main current quest :</em><br><i>Investigate Cintran's manor</i></strong><br>
+      <strong style="color:yellow"><em>Main current quest :</em><br><i>None</i></strong><br>
       <table id="t2">
       <th style="color:red;font-size=30">Statistics:</th>
 
@@ -159,7 +161,7 @@
 
         <em style="color:yellow">Niveau du joueur : </em>
 
-        <td style="color:yellow">46</td>
+        <td style="color:yellow">50</td>
 
       </tr>
 
@@ -167,17 +169,17 @@
 
       <tr><em style="color:yellow">Equipement:  </em>
 
-        <td style="color:yellow"> Taer-holn : 440-478 dmg</td>
+        <td style="color:yellow"> Taer-holn : 540-578 dmg</td>
 
         <td style="color:yellow"> Iris : 330-388 dmg</td>
 
-        <td style="color:yellow"> Toussaint armor : 250 armor</td>
+        <td style="color:yellow"> Han Guidth armor : 250 armor</td>
 
-        <td style="color:yellow"> Toussaint gauntlets : 84 armor</td>
+        <td style="color:yellow"> Han Guidth gauntlets : 84 armor</td>
 
-        <td style="color:yellow"> Toussaint pants : 85 armor</td>
+        <td style="color:yellow"> Han Guidth pants : 85 armor</td>
 
-        <td style="color:yellow"> Toussaint boots : 65 armor</td>
+        <td style="color:yellow"> Han Guidth boots : 65 armor</td>
 
       </tr>
 
@@ -195,7 +197,7 @@
 
         <em style="color:yellow">Gold : </em>
 
-        <td style="color:yellow">5800</td>
+        <td style="color:yellow">7800</td>
 
       </tr>
 
@@ -206,7 +208,7 @@
         <em style="color:yellow">Upgrades : </em>
 
         <td style="color:yellow">Attack:14-54 points in branch</td>
-        <td style="color:yellow">Sign:2-6 points in branch</td>
+        <td style="color:yellow">Sign:4-12 points in branch</td>
 
       </tr>
     </table>
@@ -219,7 +221,7 @@
 
 
 <script>
-
+/* eslint-disable no-alert, no-console */
 //import axios from 'axios'
 
 
@@ -245,7 +247,7 @@ export default {
       workbench:"",
 
       utilitary:"",
-      products:[],
+      lp:[],
     }
 
   },
@@ -255,20 +257,24 @@ export default {
  var myHeaders = new Headers()
  myHeaders.append("Content-Type","application/json")
  
- this.products = new Request("https://localhost:44386/api/Products",
+ const request = new Request("https://localhost:44386/api/Products",
          {
             headers: myHeaders,
             method: 'GET',})
-    alert(this.products)
-    fetch(this.products)
-      .then(response => 
-       {
-        if (response.status === 200) {
-           alert('Object created')
-        } else {
-           alert('Something went wrong on api server!');
-       }
-       })},
+    console.log(JSON.stringify(request))
+    fetch(request)
+.then(
+    function(response) {
+      if (response.status !== 200) {
+        alert('Looks like there was a problem. Status Code: ' +
+          response.status);
+        return;
+      }else{
+        return this.lp=response.json()
+      }
+      })
+  .then(data=>{console.log(data)})
+    },
     send: function() {
 
      var myHeaders = new Headers()
@@ -377,8 +383,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 
   text-align: center;
-
-  color: #2c3e50;
 
   margin-top: 60px;
   font: size 132px;
