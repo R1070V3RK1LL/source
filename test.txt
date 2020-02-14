@@ -1,0 +1,77 @@
+import com.eviware.soapui.SoapUI 
+def sDevices = testRunner.testCase.testSuite.project.getPropertyValue( "DEVICES")
+sDevices = sDevices.substring(1 , sDevices.size()-1 )
+log.info "sDevices >"+sDevices+"<"
+def listDevices = sDevices.split(',')
+def loopDevice = 0
+
+def countDevice = listDevices.size()
+log.info "NB DEVICES ="+countDevice+"<"
+while (loopDevice < countDevice ){
+	log.info "==========================================="
+	log.info "===="+loopDevice
+	// Do your action here
+	log.info "Device:"+listDevices[loopDevice].trim()+"<"
+	//testRunner.testCase.testSuite.project.setPropertyValue( "counter", i.toString())
+	testRunner.testCase.testSuite.project.setPropertyValue( "deviceAdress", listDevices[loopDevice].trim() )
+	testRunner.runTestStepByName("getDevice")
+
+	// Parcours des sous fonctions
+	def sFunc = testRunner.testCase.testSuite.project.getPropertyValue("FUNCTIONS")
+	def saFunc = sFunc.substring(1 , sFunc.size()-1 )
+	/*def saFunc = sFunc.replace("[","").replace("]","")
+	log.info saFunc*/
+	def listFunc = sFunc.split(',')
+	def loopFunc = 0
+	def countFunc = listFunc.size()
+	log.info "NB FUNCTIONS ="+countFunc+"<"
+	log.info "========Functions ================"
+	while (loopFunc < countFunc ){
+		def sAttr = testRunner.testCase.testSuite.project.getPropertyValue(!="id"&&!="type")
+		def saAttr = sAttr.substring(1 , sAttr.size()-1 )
+		def listAttr = sAttr.split(',')
+		def loopAttr = 0
+		def countAttr = listAttr.size()
+		// Do your action here
+		log.info "======="+loopFunc
+		//log.info "FUNCTIONS ="+listFunc[loopFunc].trim()+"<"
+		
+		def theFunc = listFunc[loopFunc].trim()
+		def regex = ~/\[(.*?)\]/ 
+		
+		theFunc = theFunc.replaceAll(regex,'')
+	
+		//log.info "=="
+		//log.info "chaine definitive ="+ theFunc.replace("[","").replace("]","") +"<"
+
+
+		
+          theFunc = theFunc.replace("[","").replace("]","")
+          log.info "FUNCTIONS ="+theFunc+"<"
+		if (theFunc == "BASICFunction")
+		{ 
+		  	log.error "FUNCTIONS ="+theFunc+"<"
+		}
+		else
+		{
+			log.warn ("FUNCTIONS ="+listFunc[loopFunc].trim()+"<");	
+		}
+          
+		while (loopAttr < countAttr )
+		{
+			log.info "==========================================="
+			log.info "===="+loopAttr
+			log.info "Device:"+theFunc[loopFunc].trim()+"<"
+			testRunner.testCase.testSuite.project.setPropertyValue( "deviceFunction", theFunc )
+			testRunner.runTestStepByName("getDeviceFunction")
+		}
+		// increment the counter
+		loopFunc++
+	}
+	log.info "==========================================="
+	// increment the counter
+	loopDevice++
+	}
+	
+
+log.info "ALL DONE"+loopDevice
